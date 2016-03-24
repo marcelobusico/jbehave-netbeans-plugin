@@ -112,8 +112,7 @@ public class StepsDictionary
     {
         try
         {
-            String filePath = fileObject.getPath();
-            if (filePath.endsWith(".java") && filePath.contains("/src/main/java/"))
+            if (isCandidate(fileObject))
             {
                 List<String> fileLines = fileObject.asLines();
                 int lineNumber = 0;
@@ -128,6 +127,16 @@ public class StepsDictionary
         {
             Exceptions.printStackTrace(ex);
         }
+    }
+
+    private boolean isCandidate(FileObject fileObject)
+    {
+        String filePath = fileObject.getPath();
+
+        boolean hasJavaExtension = filePath.endsWith(".java");
+        boolean isSourceFile = filePath.contains("/src/main/java/") || filePath.contains("/src/test/java/");
+
+        return hasJavaExtension && isSourceFile;
     }
 
     private void processJavaFileLine(String fileLine, FileObject fileObject, int lineNumber)
@@ -189,14 +198,14 @@ public class StepsDictionary
     {
         String beginOfOperationInStep = operationInStep.substring(
                 0, operationInStep.indexOf("$"));
-        
+
         String operationInStoryWithTrailingSpace = operationInStory + " ";
-        
+
         if (!operationInStoryWithTrailingSpace.startsWith(beginOfOperationInStep))
         {
             return false;
         }
-        
+
         String[] wordsInOperation = operationInStep.split(" ");
         for (String word : wordsInOperation)
         {
