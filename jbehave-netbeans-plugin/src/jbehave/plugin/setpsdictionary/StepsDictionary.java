@@ -209,7 +209,7 @@ public class StepsDictionary
         String[] wordsInOperation = operationInStep.split(" ");
         for (String word : wordsInOperation)
         {
-            if (!word.startsWith("$"))
+            if (!word.startsWith("$") && !word.startsWith("'$"))
             {
                 if (!operationInStory.contains(word))
                 {
